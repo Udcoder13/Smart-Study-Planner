@@ -14,10 +14,11 @@ app.use((req, res, next) => {
 }); 
 
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000 || 5000 || '0.0.0.0';
 app.use(cors());
 app.use(express.json());
-mongoose.connect('mongodb+srv://udit13:udit1301@udit13.mwygq66.mongodb.net/?retryWrites=true&w=majority&appName=udit13')
+const mongoURI = process.env.MONGO_URI;
+mongoose.connect(mongoURI)
 .then(()=>{
     console.log("Connected")
 })
