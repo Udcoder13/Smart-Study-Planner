@@ -7,47 +7,58 @@ const generateToken = (id) => {
 };
 
 exports.register = async (req, res) => {
-  const { name, email, password } = req.body;
+  try {
+    const { name, email, password } = req.body;
 
-  const existingUser = await User.findOne({ email });
-  if (existingUser) return res.status(400).json({ message: 'User already exists' });
-
-  const user = await User.create({ name, email, password });
-
-  // Insert default categories for this user
-  await Category.insertMany([
-    {
-      name: 'Data Structures & Algorithms',
-      description: 'Master problem-solving with efficient algorithms',
-      icon: 'Code2',
-      color: 'from-indigo-500 to-purple-600',
-      totalTopics: 25,
-      user: user._id
-    },
-    {
-      name: 'Development',
-      description: 'Build modern web and mobile applications',
-      icon: 'Monitor',
-      color: 'from-purple-500 to-pink-600',
-      totalTopics: 30,
-      user: user._id
-    },
-    {
-      name: 'System Design',
-      description: 'Design scalable and reliable systems',
-      icon: 'Network',
-      color: 'from-emerald-500 to-teal-600',
-      totalTopics: 20,
-      user: user._id
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
     }
-  ]);
 
-  res.status(201).json({
-    _id: user._id,
-    name: user.name,
-    email: user.email,
-    token: generateToken(user._id)
-  });
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+
+    const user = await User.create({ name, email, password });
+
+    await Category.insertMany([
+      {
+        name: 'Data Structures & Algorithms',
+        description: 'Master problem-solving with efficient algorithms',
+        icon: 'Code2',
+        color: 'from-indigo-500 to-purple-600',
+        totalTopics: 25,
+        user: user._id
+      },
+      {
+        name: 'Development',
+        description: 'Build modern web and mobile applications',
+        icon: 'Monitor',
+        color: 'from-purple-500 to-pink-600',
+        totalTopics: 30,
+        user: user._id
+      },
+      {
+        name: 'System Design',
+        description: 'Design scalable and reliable systems',
+        icon: 'Network',
+        color: 'from-emerald-500 to-teal-600',
+        totalTopics: 20,
+        user: user._id
+      }
+    ]);
+
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id)
+    });
+
+  } catch (error) {
+    console.error('[REGISTER ERROR]', error);
+    res.status(500).json({ message: 'Registration failed' });
+  }
 };
 
 exports.login = async (req, res) => {

@@ -1,4 +1,6 @@
+# =====================
 # Logs
+# =====================
 logs
 *.log
 npm-debug.log*
@@ -7,12 +9,37 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+# =====================
+# Dependencies
+# =====================
+node_modules/
+
+# =====================
+# Build outputs
+# =====================
 dist
 dist-ssr
-*.local
+build
+client/build
+client/dist
 
-# Editor directories and files
+# =====================
+# Environment files
+# =====================
+.env
+*.env.local
+server/.env
+client/.env
+
+# NOTE:
+# We intentionally DO NOT ignore:
+# client/.env.production
+# because it contains public VITE_* variables
+# and is safe + required for production builds
+
+# =====================
+# Editor / OS files
+# =====================
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -22,14 +49,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.env
-
-# Frontend
-client/node_modules/
-client/build/
-client/.env
-
-# Backend
-server/node_modules/
-server/.env
-

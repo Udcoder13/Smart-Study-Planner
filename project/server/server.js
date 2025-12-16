@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 }); 
 
 
-const PORT = process.env.PORT || 3000 || 5000 || '0.0.0.0';
+const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 const mongoURI = process.env.MONGO_URI;
@@ -30,6 +30,6 @@ app.use('/api/categories', require('./routes/categoryRoutes'));
 app.use('/api/notes', require('./routes/noteRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
